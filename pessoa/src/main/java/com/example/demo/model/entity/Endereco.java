@@ -22,6 +22,16 @@ public class Endereco {
     @Column
     private String cidade;
 
+    @OneToOne(cascade={
+        CascadeType.PERSIST,
+        CascadeType.MERGE,
+        CascadeType.REFRESH
+}, targetEntity = Pessoa.class)
+@JoinTable(name = "pessoa_endereco", 
+joinColumns=@JoinColumn(name="d_endereco"),
+inverseJoinColumns =@JoinColumn(name = "iid_pessoa"))
+    private Pessoa pessoa;
+
     public String getCep() {
         return cep;
     }
@@ -61,4 +71,14 @@ public class Endereco {
     public void setId(Integer id) {
         this.id = id;
     }
+
+    public Pessoa getPessoa() {
+        return pessoa;
+    }
+
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
+    }
+
+    
 }

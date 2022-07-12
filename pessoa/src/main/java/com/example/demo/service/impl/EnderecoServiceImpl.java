@@ -1,16 +1,20 @@
 package com.example.demo.service.impl;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
+import org.springframework.data.domain.Example;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.stereotype.Service;
+
 import com.example.demo.error.EnderecoErro;
 import com.example.demo.model.dto.EnderecoDTO;
 import com.example.demo.model.entity.Endereco;
 import com.example.demo.model.repository.EnderecoRepository;
 import com.example.demo.service.interfaces.EnderecoService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
-import java.util.Objects;
-import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class EnderecoServiceImpl implements EnderecoService {
@@ -60,16 +64,28 @@ public class EnderecoServiceImpl implements EnderecoService {
     public Endereco converter(EnderecoDTO dto) {
         Endereco endereco = new Endereco();
         endereco.setId(dto.getId());
+
         endereco.setCidade(dto.getCidade());
         endereco.setLogradouro(dto.getLogradouro());
         endereco.setNumeroResidencia(dto.getNumeroResidencia());
 
-//        System.out.println(dto.getCep());
-//        String cepFormatado = dto.getCep().toString().substring(0,2)+"."
-//                +dto.getCep().toString().substring(2,5)+"-"
-//                +dto.getCep().toString().substring(5,8);
+       String cepFormatado = dto.getCep().toString().substring(0,2)+"."
+               +dto.getCep().toString().substring(2,5)+"-"
+               +dto.getCep().toString().substring(5,8);
 
-//        endereco.setCep(cepFormatado);
+       endereco.setCep(cepFormatado);
         return endereco;
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Endereco> buscarEndereco(Endereco endereco) {
+        Example example = Example.of(endereco,
+                ExampleMatcher.matching()
+                        .withIgnoreCase()
+                        .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING));
+        return repository.findAll(example);
+    }
+
+    
 }

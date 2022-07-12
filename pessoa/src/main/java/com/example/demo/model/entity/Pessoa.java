@@ -2,6 +2,7 @@ package com.example.demo.model.entity;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table
@@ -18,9 +19,13 @@ public class Pessoa {
     @Column
     private Date dataNascimento;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn
-    private Endereco endereco;
+    @OneToMany(cascade={
+        CascadeType.PERSIST,
+        CascadeType.MERGE}, targetEntity = Endereco.class)
+    @JoinTable(name = "pessoa_endereco", 
+               joinColumns=@JoinColumn(name="id_pessoa"),
+               inverseJoinColumns =@JoinColumn(name = "id_endereco"))
+    private Set<Endereco> enderecos;
 
     public Integer getId() {
         return id;
@@ -46,13 +51,14 @@ public class Pessoa {
         this.dataNascimento = dataNascimento;
     }
 
-    public Endereco getEndereco() {
-        return endereco;
+    public Set<Endereco> getEnderecos() {
+        return enderecos;
     }
 
-    public void setEndereco(Endereco endereco) {
-        this.endereco = endereco;
+    public void setEnderecos(Set<Endereco> enderecos) {
+        this.enderecos = enderecos;
     }
 
+    
 
 }

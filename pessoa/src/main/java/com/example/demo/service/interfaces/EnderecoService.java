@@ -3,6 +3,8 @@ package com.example.demo.service.interfaces;
 import com.example.demo.model.dto.EnderecoDTO;
 import com.example.demo.model.entity.Endereco;
 
+
+import java.util.List;
 import java.util.Optional;
 
 public interface EnderecoService {
@@ -15,5 +17,8 @@ public interface EnderecoService {
     Optional<Endereco> obterPorId(Integer id);
 
     Endereco converter(EnderecoDTO dto);
+
+ 
+    List<Endereco> buscarEndereco(Endereco endereco);
 
 }
