@@ -1,5 +1,7 @@
 package com.example.demo.model.entity;
 
+import com.example.demo.model.enums.EnderecoPrincipal;
+
 import javax.persistence.*;
 
 @Entity
@@ -19,6 +21,10 @@ public class Endereco {
     @Column
     private Integer numeroResidencia;
 
+    @Enumerated(value = EnumType.STRING)
+    @Column
+    private EnderecoPrincipal enderecoPrincipal;
+
     @Column
     private String cidade;
 
@@ -27,9 +33,9 @@ public class Endereco {
         CascadeType.MERGE,
         CascadeType.REFRESH
 }, targetEntity = Pessoa.class)
-@JoinTable(name = "pessoa_endereco", 
-joinColumns=@JoinColumn(name="d_endereco"),
-inverseJoinColumns =@JoinColumn(name = "iid_pessoa"))
+   @JoinTable(name = "pessoa_endereco",
+            joinColumns=@JoinColumn(name="id_endereco"),
+            inverseJoinColumns =@JoinColumn(name = "id_pessoa"))
     private Pessoa pessoa;
 
     public String getCep() {

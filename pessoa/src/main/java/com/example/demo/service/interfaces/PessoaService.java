@@ -1,7 +1,19 @@
 package com.example.demo.service.interfaces;
 
+import com.example.demo.model.entity.Endereco;
 import com.example.demo.model.entity.Pessoa;
+
+import java.util.List;
+import java.util.Optional;
 
 public interface PessoaService {
     Pessoa salvarPessoa(Pessoa pessoa);
+
+    Pessoa atualizarPessoa(Pessoa pessoa);
+
+    void deletarPessoa(Pessoa pessoa);
+
+    Optional<Pessoa> obterPorId(Integer id);
+
+    List<Pessoa> buscarEndereco(Pessoa pessoa);
 }

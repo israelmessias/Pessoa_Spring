@@ -23,8 +23,9 @@ public class Pessoa {
         CascadeType.PERSIST,
         CascadeType.MERGE}, targetEntity = Endereco.class)
     @JoinTable(name = "pessoa_endereco", 
-               joinColumns=@JoinColumn(name="id_pessoa"),
-               inverseJoinColumns =@JoinColumn(name = "id_endereco"))
+               joinColumns=@JoinColumn(name="id_pessoa")
+            ,inverseJoinColumns =@JoinColumn(name = "id_endereco")
+    )
     private Set<Endereco> enderecos;
 
     public Integer getId() {
