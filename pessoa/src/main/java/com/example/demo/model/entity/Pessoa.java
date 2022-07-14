@@ -1,6 +1,8 @@
 package com.example.demo.model.entity;
 
 import javax.persistence.*;
+
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Set;
 
@@ -17,14 +19,15 @@ public class Pessoa {
     private String nome;
 
     @Column
-    private Date dataNascimento;
+    private LocalDate dataNascimento;
 
     @OneToMany(cascade={
         CascadeType.PERSIST,
-        CascadeType.MERGE}, targetEntity = Endereco.class)
+        CascadeType.MERGE}, 
+        targetEntity = Endereco.class)
     @JoinTable(name = "pessoa_endereco", 
                joinColumns=@JoinColumn(name="id_pessoa")
-            ,inverseJoinColumns =@JoinColumn(name = "id_endereco")
+              ,inverseJoinColumns =@JoinColumn(name = "id_endereco")
     )
     private Set<Endereco> enderecos;
 
@@ -44,11 +47,11 @@ public class Pessoa {
         this.nome = nome;
     }
 
-    public Date getDataNascimento() {
+    public LocalDate getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(Date dataNascimento) {
+    public void setDataNascimento(LocalDate dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 
