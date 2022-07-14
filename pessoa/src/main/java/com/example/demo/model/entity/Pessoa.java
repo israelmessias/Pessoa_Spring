@@ -2,6 +2,8 @@ package com.example.demo.model.entity;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.Set;
@@ -21,6 +23,7 @@ public class Pessoa {
     @Column
     private LocalDate dataNascimento;
 
+    @JsonBackReference
     @OneToMany(cascade={
         CascadeType.PERSIST,
         CascadeType.MERGE}, 

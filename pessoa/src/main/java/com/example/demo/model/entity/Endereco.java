@@ -1,6 +1,7 @@
 package com.example.demo.model.entity;
 
 import com.example.demo.model.enums.EnderecoPrincipal;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 
@@ -28,6 +29,7 @@ public class Endereco {
     @Column
     private String cidade;
 
+    @JsonManagedReference
     @OneToOne(cascade={
         CascadeType.PERSIST,
         CascadeType.MERGE,
