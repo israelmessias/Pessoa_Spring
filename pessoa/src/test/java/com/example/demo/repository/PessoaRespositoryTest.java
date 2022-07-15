@@ -41,9 +41,13 @@ public class PessoaRespositoryTest {
 	
 	public static Pessoa criarPessoa() {
 		PessoaDTO dto = new PessoaDTO();
+		dto.setNome("Tatiane");
+		dto.setDia(12);
+		dto.setMes(8);
+		dto.setAno(1999);
 		Pessoa pessoa = new Pessoa();
-		pessoa.setNome("Tatiane");
-		pessoa.setDataNascimento(LocalDate.of(17, 9, 2001));
+		pessoa.setNome(dto.getNome());
+		pessoa.setDataNascimento(LocalDate.of(dto.getAno(), dto.getMes(), dto.getDia()));
 		return pessoa;
 	}
 }
