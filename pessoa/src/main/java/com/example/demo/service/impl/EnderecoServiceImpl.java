@@ -80,8 +80,7 @@ public class EnderecoServiceImpl implements EnderecoService {
 
        endereco.setCep(cepFormatado);
 
-       Optional<Pessoa> pessoaConvert = pessoaRepository.findById(dto.getPessoa());
-       endereco.setPessoa(pessoaConvert.get());
+       endereco.setPessoa(null);
        
         return endereco;
     }

@@ -23,7 +23,7 @@ public class Pessoa {
     @Column
     private LocalDate dataNascimento;
 
-    @JsonBackReference
+    // @JsonBackReference
     @OneToMany(cascade={
         CascadeType.PERSIST,
         CascadeType.MERGE}, 

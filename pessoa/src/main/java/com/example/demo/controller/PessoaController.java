@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.dto.PessoaByIdDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +36,19 @@ public class PessoaController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
         
+    }
+
+    @PostMapping("/salvar/new")
+    public ResponseEntity salvarPessoa(@RequestBody PessoaByIdDTO dto){
+        try {
+            Pessoa pessoa = service.converterById(dto);
+            Pessoa pessoaSalva = service.salvarPessoa(pessoa);
+            return new ResponseEntity(pessoaSalva, HttpStatus.CREATED);
+        } catch (Exception e) {
+            //TODO: handle exception
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
     }
 
     @PutMapping(path = "/atualizar/{id}")

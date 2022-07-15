@@ -1,18 +1,18 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.error.PessoaError;
+import com.example.demo.model.dto.PessoaByIdDTO;
 import com.example.demo.model.dto.PessoaDTO;
+import com.example.demo.model.entity.Endereco;
 import com.example.demo.model.entity.Pessoa;
+import com.example.demo.model.repository.EnderecoRepository;
 import com.example.demo.model.repository.PessoaRepository;
 import com.example.demo.service.interfaces.PessoaService;
 
 import java.text.DateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +22,9 @@ public class PessoaServiceImpl implements PessoaService {
 
     @Autowired
     private PessoaRepository repository;
+
+    @Autowired
+    private EnderecoRepository enderecoRepository;
     
     @Override
     public Pessoa salvarPessoa(Pessoa pessoa) {
@@ -79,8 +82,31 @@ public class PessoaServiceImpl implements PessoaService {
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy"); 
         dataConvert.format(format);
         pessoa.setDataNascimento(dataConvert);
-        
-        
+
+        return pessoa;
+    }
+
+    @Override
+    public Pessoa converterById(PessoaByIdDTO dto) {
+        Pessoa pessoa = new Pessoa();
+
+        pessoa.setId(dto.getId());
+        pessoa.setNome(dto.getNome());
+
+        LocalDate dataConvert  = LocalDate.of(dto.getAno(), dto.getMes(), dto.getDia());
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        dataConvert.format(format);
+        pessoa.setDataNascimento(dataConvert);
+
+        Set<Endereco> enderecoConvert = new HashSet<>();
+
+        for (Integer endereco : dto.getEnderecos()) {
+            Optional<Endereco> findEndereco = enderecoRepository.findById(endereco);
+            enderecoConvert.add(findEndereco.get());
+        }
+
+        pessoa.setEnderecos(enderecoConvert);
+
         return pessoa;
     }
 }

@@ -1,5 +1,6 @@
 package com.example.demo.service.interfaces;
 
+import com.example.demo.model.dto.PessoaByIdDTO;
 import com.example.demo.model.dto.PessoaDTO;
 import com.example.demo.model.entity.Endereco;
 import com.example.demo.model.entity.Pessoa;
@@ -19,4 +20,6 @@ public interface PessoaService {
     List<Pessoa> buscarEndereco(Pessoa pessoa);
 
     Pessoa converter(PessoaDTO dto);
+
+    Pessoa converterById(PessoaByIdDTO dto);
 }

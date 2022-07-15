@@ -11,7 +11,6 @@ public class EnderecoDTO {
 
     private String cidade;
 
-    private Integer pessoa;
 
     public Integer getCep() {
         return cep;
@@ -51,15 +50,5 @@ public class EnderecoDTO {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getPessoa() {
-        return pessoa;
-    }
-
-    public void setPessoa(Integer pessoa) {
-        this.pessoa = pessoa;
-    }
-
-    
+    }  
 }

@@ -29,11 +29,8 @@ public class Endereco {
     @Column
     private String cidade;
 
-    @JsonManagedReference
     @OneToOne(cascade={
-        CascadeType.PERSIST,
-        CascadeType.MERGE,
-        CascadeType.REFRESH
+        CascadeType.ALL
 }, targetEntity = Pessoa.class)
    @JoinTable(name = "pessoa_endereco",
             joinColumns=@JoinColumn(name="id_endereco"),
