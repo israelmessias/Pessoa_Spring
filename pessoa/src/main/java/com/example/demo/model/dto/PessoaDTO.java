@@ -19,6 +19,8 @@ public class PessoaDTO {
 
     private Integer ano;
 
+    private String enderecoPrincipal;
+
     Set<Endereco> enderecos = new HashSet<>();
 
     public Integer getId() {

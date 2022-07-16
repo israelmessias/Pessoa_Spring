@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface EnderecoService {
-    Endereco salvar(Endereco endereco);
+    Endereco salvarEndereco(Endereco endereco);
 
-    Endereco atualizar(Endereco endereco);
+    Endereco atualizarEndereco(Endereco endereco);
 
     void deletar(Endereco endereco);
 
@@ -18,7 +18,7 @@ public interface EnderecoService {
 
     Endereco converter(EnderecoDTO dto);
 
- 
+
     List<Endereco> buscarEndereco(Endereco endereco);
 
 }

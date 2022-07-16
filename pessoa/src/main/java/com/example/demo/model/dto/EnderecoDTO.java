@@ -11,6 +11,8 @@ public class EnderecoDTO {
 
     private String cidade;
 
+    private String enderecoPrincipal;
+
 
     public Integer getCep() {
         return cep;
@@ -50,5 +52,13 @@ public class EnderecoDTO {
 
     public void setId(Integer id) {
         this.id = id;
-    }  
+    }
+
+    public String getEnderecoPrincipal() {
+        return enderecoPrincipal;
+    }
+
+    public void setEnderecoPrincipal(String enderecoPrincipal) {
+        this.enderecoPrincipal = enderecoPrincipal;
+    }
 }

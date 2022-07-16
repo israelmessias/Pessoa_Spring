@@ -1,6 +1,7 @@
 package com.example.demo.repository;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -28,7 +29,7 @@ public class PessoaRespositoryTest {
 	@Autowired
 	private PessoaRepository repository;
 	@Autowired
-	private TestEntityManager entityManager;
+	private  TestEntityManager entityManager;
 	
 	@Test
 	public void devePersistirPessoaNoBD() {
@@ -38,16 +39,47 @@ public class PessoaRespositoryTest {
 		
 		Assertions.assertThat(pessoaSalva.getId()).isNotNull();	
 	}
+
+	@Test
+	public void existePessoaNoBD(){
+		Pessoa pessoa = pessoaPersitida();
+
+		Optional<Pessoa> pessoaEncontrada = repository.findById(pessoa.getId());
+
+		Assertions.assertThat(pessoaEncontrada.isPresent()).isTrue();
+	}
+
+	@Test
+	public void deveDeletarPessoa(){
+		Pessoa pessoa = pessoaPersitida();
+
+		pessoa = entityManager.find(Pessoa.class, pessoa.getId());
+
+		repository.delete(pessoa);
+		Pessoa pessoaInexistente = entityManager.find(Pessoa.class, pessoa.getId());
+
+		Assertions.assertThat(pessoaInexistente).isNull();
+	}
 	
-	public static Pessoa criarPessoa() {
+	private static Pessoa criarPessoa() {
 		PessoaDTO dto = new PessoaDTO();
 		dto.setNome("Tatiane");
 		dto.setDia(12);
 		dto.setMes(8);
 		dto.setAno(1999);
+
 		Pessoa pessoa = new Pessoa();
 		pessoa.setNome(dto.getNome());
 		pessoa.setDataNascimento(LocalDate.of(dto.getAno(), dto.getMes(), dto.getDia()));
+		return pessoa;
+	}
+
+
+	public  Pessoa pessoaPersitida(){
+		Pessoa pessoa = criarPessoa();
+
+		entityManager.persist(pessoa);
+
 		return pessoa;
 	}
 }

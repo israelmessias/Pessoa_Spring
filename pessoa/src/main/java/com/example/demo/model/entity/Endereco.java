@@ -2,6 +2,7 @@ package com.example.demo.model.entity;
 
 import com.example.demo.model.enums.EnderecoPrincipal;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.sun.istack.NotNull;
 
 import javax.persistence.*;
 
@@ -17,6 +18,8 @@ public class Endereco {
     @Column
     private String cep;
 
+    @NotNull
+    @Column
     private String logradouro;
 
     @Column
@@ -24,6 +27,7 @@ public class Endereco {
 
     @Enumerated(value = EnumType.STRING)
     @Column
+    @NotNull
     private EnderecoPrincipal enderecoPrincipal;
 
     @Column
@@ -85,5 +89,11 @@ public class Endereco {
         this.pessoa = pessoa;
     }
 
-    
+    public EnderecoPrincipal getEnderecoPrincipal() {
+        return enderecoPrincipal;
+    }
+
+    public void setEnderecoPrincipal(EnderecoPrincipal enderecoPrincipal) {
+        this.enderecoPrincipal = enderecoPrincipal;
+    }
 }

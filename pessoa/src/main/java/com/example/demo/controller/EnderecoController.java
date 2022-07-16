@@ -3,7 +3,6 @@ package com.example.demo.controller;
 import com.example.demo.model.dto.EnderecoDTO;
 import com.example.demo.model.entity.Endereco;
 import com.example.demo.service.impl.EnderecoServiceImpl;
-import com.example.demo.service.interfaces.EnderecoService;
 
 import java.util.List;
 
@@ -31,7 +30,7 @@ public class EnderecoController {
     public ResponseEntity salvarEndereco(@RequestBody EnderecoDTO dto){
         Endereco endereco = service.converter(dto);
         try{
-            Endereco enderecoSalvo = service.salvar(endereco);
+            Endereco enderecoSalvo = service.salvarEndereco(endereco);
             return new ResponseEntity(enderecoSalvo, HttpStatus.CREATED);
         }catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -45,7 +44,7 @@ public class EnderecoController {
             try {
                 Endereco endereco = service.converter(dto);
                 endereco.setId(entity.getId());
-                service.atualizar(endereco);
+                service.atualizarEndereco(endereco);
                 return new ResponseEntity(endereco, HttpStatus.CREATED);
             } catch (Exception e) {
                 //TODO: handle exception

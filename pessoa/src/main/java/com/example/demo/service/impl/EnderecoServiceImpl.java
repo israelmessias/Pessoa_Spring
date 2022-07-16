@@ -4,16 +4,15 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import com.example.demo.model.enums.EnderecoPrincipal;
 import org.springframework.data.domain.Example;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.error.EnderecoErro;
 import com.example.demo.model.dto.EnderecoDTO;
 import com.example.demo.model.entity.Endereco;
-import com.example.demo.model.entity.Pessoa;
 import com.example.demo.model.repository.EnderecoRepository;
 import com.example.demo.model.repository.PessoaRepository;
 import com.example.demo.service.interfaces.EnderecoService;
@@ -28,7 +27,7 @@ public class EnderecoServiceImpl implements EnderecoService {
     private PessoaRepository pessoaRepository;
 
     @Override
-    public Endereco salvar(Endereco endereco) {
+    public Endereco salvarEndereco(Endereco endereco) {
         try{
             Endereco enderecoSalvo = repository.save(endereco);
             return enderecoSalvo;
@@ -39,12 +38,12 @@ public class EnderecoServiceImpl implements EnderecoService {
 
     @Override
     @Transactional
-    public Endereco atualizar(Endereco endereco) {
+    public Endereco atualizarEndereco(Endereco endereco) {
         try {
             Objects.requireNonNull(endereco.getId());
             Endereco enderecoAtualizado = repository.save(endereco);
             return enderecoAtualizado;
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
             throw new EnderecoErro("Não foi possivel atualizar o endereco: " + e.getMessage());
         }
     }
@@ -55,8 +54,8 @@ public class EnderecoServiceImpl implements EnderecoService {
         try {
             Objects.requireNonNull(endereco.getId());
             repository.delete(endereco);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (NullPointerException e) {
+            throw new EnderecoErro("Não foi possivel deletar o endereco: " + e.getMessage());
         }
     }
 
@@ -79,6 +78,7 @@ public class EnderecoServiceImpl implements EnderecoService {
                +dto.getCep().toString().substring(5,8);
 
        endereco.setCep(cepFormatado);
+       endereco.setEnderecoPrincipal(EnderecoPrincipal.valueOf(dto.getEnderecoPrincipal()));
 
        endereco.setPessoa(null);
        
