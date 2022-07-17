@@ -1,5 +1,7 @@
 package com.example.demo.service;
 
+import com.example.demo.error.EnderecoErro;
+import com.example.demo.error.PessoaError;
 import com.example.demo.model.dto.PessoaDTO;
 import com.example.demo.model.entity.Endereco;
 import com.example.demo.model.entity.Pessoa;
@@ -10,25 +12,31 @@ import com.example.demo.service.impl.PessoaServiceImpl;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.data.domain.Example;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 import static com.example.demo.repository.EnderecoRepositoryTest.criarEndereco;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
 public class PessoaServiceTest {
 
-    @SpyBean
+    @InjectMocks
     private PessoaServiceImpl service;
-    @MockBean
+    @Mock
     private PessoaRepository repository;
 
     @Test
@@ -42,19 +50,88 @@ public class PessoaServiceTest {
         Assertions.assertThat(pessoaSalva).isNotNull();
         Assertions.assertThat(pessoaSalva.getNome()).isEqualTo("Tatiane");
         Assertions.assertThat(pessoaSalva.getDataNascimento()).isEqualTo("1999-08-12");
-        Assertions.assertThat(pessoaSalva.getEnderecos()).isEmpty();
+        Assertions.assertThat(pessoaSalva.getEnderecos()).isNotEmpty();
+    }
+    @Test
+    public void naoDeveSalvar(){
+        Pessoa pessoa = new Pessoa();
+        pessoa.setNome(null);
+
+        Mockito.when( service.salvarPessoa(pessoa)).thenThrow(PessoaError.class);
+
+        Mockito.verify(repository, Mockito.never()).save(pessoa);
     }
 
     @Test
-    public void obterPorId(){
+    public void atualizarEndereco(){
+        Pessoa pessoa = criarPessoa();
+        pessoa.setId(1);
+
+        Mockito.when(repository.save(pessoa) ).thenReturn(pessoa);
+
+        service.atualizarPessoa(pessoa);
+
+        Mockito.verify(repository, Mockito.times(1)).save(pessoa);
+    }
+
+    @Test
+    public void NaoDeveAtualizar(){
+        Pessoa pessoa = criarPessoa();
+
+        PessoaError erro = assertThrows(
+                PessoaError.class,
+                () -> service.atualizarPessoa(pessoa)
+        );
+
+        Mockito.verify(repository, Mockito.never()).save(pessoa);
+    }
+
+    @Test
+    public void deletarPessoa(){
+        Pessoa pessoa = criarPessoa();
+        pessoa.setId(1);
+
+        service.deletarPessoa(pessoa);
+
+        Mockito.verify(repository).delete(pessoa);
+    }
+
+    @Test
+    public void deletarPessoaQueNaoExiste(){
+        Pessoa pessoa = criarPessoa();
+
+        PessoaError erro = assertThrows(
+                PessoaError.class,
+                () -> service.deletarPessoa(pessoa)
+        );
+
+        Mockito.verify(repository, Mockito.never()).save(pessoa);
+    }
+
+    @Test
+    public void obterEnderecoPorId(){
         Integer id = 1;
         Pessoa pessoa = criarPessoa();
         pessoa.setId(id);
 
         Mockito.when(repository.findById(id)).thenReturn(Optional.of(pessoa));
-         Optional<Pessoa> result = service.obterPorId(id);
 
-         Assertions.assertThat(result.isPresent()).isFalse();
+        Optional<Pessoa> result = service.obterPorId(id);
+
+        Assertions.assertThat(result.isPresent()).isTrue();
+    }
+
+    @Test
+    public  void retornarVazioEnderecoPorId(){
+        Integer id = 1;
+        Pessoa pessoa = criarPessoa();
+        pessoa.setId(id);
+
+        Mockito.when(repository.findById(id)).thenReturn(Optional.empty());
+
+        Optional<Pessoa> result = service.obterPorId(id);
+
+        Assertions.assertThat(result.isPresent()).isFalse();
     }
 
     private static Pessoa criarPessoa() {
@@ -70,5 +147,24 @@ public class PessoaServiceTest {
         Set<Endereco> enderecos = Set.of(criarEndereco());
         pessoa.setEnderecos(enderecos);
         return pessoa;
+    }
+
+    @Test
+    public void filtrarEndereco()
+    {
+        Pessoa pessoa = criarPessoa();
+        pessoa.setId(1);
+
+        List<Pessoa> lista = Arrays.asList(pessoa);
+        Mockito.when(repository.findAll(Mockito.any(Example.class)) ).thenReturn(lista);
+
+        //execução
+        List<Pessoa> result = service.buscarPessoa(pessoa);
+
+        Assertions.assertThat(result)
+                .isNotEmpty()
+                .hasSize(1)
+                .contains(pessoa);
+
     }
 }

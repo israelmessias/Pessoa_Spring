@@ -13,9 +13,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.data.domain.Example;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static com.example.demo.repository.EnderecoRepositoryTest.criarEndereco;
@@ -131,6 +134,25 @@ public class EnderecoServiceTest {
         Optional<Endereco> result = service.obterPorId(id);
 
         Assertions.assertThat(result.isPresent()).isFalse();
+    }
+
+    @Test
+    public void filtrarEndereco()
+    {
+        Endereco endereco = EnderecoRepositoryTest.criarEndereco();
+        endereco.setId(1);
+
+        List<Endereco> lista = Arrays.asList(endereco);
+        Mockito.when(repository.findAll(Mockito.any(Example.class)) ).thenReturn(lista);
+
+        //execução
+        List<Endereco> result = service.buscarEndereco(endereco);
+
+        Assertions.assertThat(result)
+                .isNotEmpty()
+                .hasSize(1)
+                .contains(endereco);
+
     }
 
 }
