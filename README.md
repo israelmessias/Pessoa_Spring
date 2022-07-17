@@ -1,11 +1,11 @@
 <h1 align=center> Pessoa_Spring
 
 ## Desafio java concluido ✔.
-## 
+
 <h2 align=center> Entidade 
 
 ### No desafio foi proposto que um usuario tivesse além de seus atributos uma lista de endereços. 
-#
+
 
 <img src="img/pessoaEntity.png" />
 <img src="img/enderecoEntity.png"  />
@@ -14,7 +14,7 @@
 <h2 align=center> Teste de Requisição
 
 ### Criei uma pasta com requisições para serem importadas tanto no insomnia ou postman.
-#
+
 
 <img src="img/importPostman.png"  /> 
 
@@ -23,7 +23,6 @@
 <h2 align=center> Teste Unitario
 
 ### Fiz os testes unitarios do repository e service.
-#
 
 <img src="img/test.png"  />
 
