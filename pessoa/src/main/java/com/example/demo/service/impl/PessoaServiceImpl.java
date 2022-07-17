@@ -1,5 +1,6 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.error.EnderecoErro;
 import com.example.demo.error.PessoaError;
 import com.example.demo.model.dto.PessoaByIdDTO;
 import com.example.demo.model.dto.PessoaDTO;
@@ -15,6 +16,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -65,8 +68,12 @@ public class PessoaServiceImpl implements PessoaService {
     }
 
     @Override
-    public List<Pessoa> buscarEndereco(Pessoa pessoa) {
-        return null;
+    public List<Pessoa> buscarPessoa(Pessoa pessoa) {
+        Example example = Example.of(pessoa,
+                ExampleMatcher.matching()
+                        .withIgnoreCase()
+                        .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING));
+        return repository.findAll(example);
     }
 
     @Override
@@ -108,5 +115,14 @@ public class PessoaServiceImpl implements PessoaService {
         pessoa.setEnderecos(enderecoConvert);
 
         return pessoa;
+    }
+
+    @Override
+    public List<Endereco> consultarEnderecos(Integer id) {
+        try{
+          return   repository.findEnderecos(id);
+        }catch (NullPointerException e){
+            throw new EnderecoErro("Não foi possivel achar Endereço para essa pessoa, motivo: " + e.getMessage());
+        }
     }
 }

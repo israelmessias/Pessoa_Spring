@@ -10,4 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 public interface PessoaRepository extends JpaRepository<Pessoa, Integer> {
+
+    @Query("SELECT r.enderecos FROM Pessoa r where r.id =:id ")
+    List<Endereco> findEnderecos(@Param("id") Integer id);
 }

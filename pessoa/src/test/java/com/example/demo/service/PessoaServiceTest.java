@@ -17,6 +17,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
+import java.util.Optional;
 import java.util.Set;
 
 import static com.example.demo.repository.EnderecoRepositoryTest.criarEndereco;
@@ -42,6 +43,18 @@ public class PessoaServiceTest {
         Assertions.assertThat(pessoaSalva.getNome()).isEqualTo("Tatiane");
         Assertions.assertThat(pessoaSalva.getDataNascimento()).isEqualTo("1999-08-12");
         Assertions.assertThat(pessoaSalva.getEnderecos()).isEmpty();
+    }
+
+    @Test
+    public void obterPorId(){
+        Integer id = 1;
+        Pessoa pessoa = criarPessoa();
+        pessoa.setId(id);
+
+        Mockito.when(repository.findById(id)).thenReturn(Optional.of(pessoa));
+         Optional<Pessoa> result = service.obterPorId(id);
+
+         Assertions.assertThat(result.isPresent()).isFalse();
     }
 
     private static Pessoa criarPessoa() {

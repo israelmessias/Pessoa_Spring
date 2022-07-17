@@ -17,9 +17,11 @@ public interface PessoaService {
 
     Optional<Pessoa> obterPorId(Integer id);
 
-    List<Pessoa> buscarEndereco(Pessoa pessoa);
+    List<Pessoa> buscarPessoa(Pessoa pessoa);
 
     Pessoa converter(PessoaDTO dto);
 
     Pessoa converterById(PessoaByIdDTO dto);
+
+    List<Endereco> consultarEnderecos(Integer id);
 }

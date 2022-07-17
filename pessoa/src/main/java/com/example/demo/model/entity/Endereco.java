@@ -1,6 +1,7 @@
 package com.example.demo.model.entity;
 
 import com.example.demo.model.enums.EnderecoPrincipal;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sun.istack.NotNull;
 
@@ -33,12 +34,16 @@ public class Endereco {
     @Column
     private String cidade;
 
+//    @JsonManagedReference
     @OneToOne(cascade={
-        CascadeType.ALL
+        CascadeType.PERSIST,
+        CascadeType.MERGE,
+            CascadeType.REFRESH
 }, targetEntity = Pessoa.class)
    @JoinTable(name = "pessoa_endereco",
             joinColumns=@JoinColumn(name="id_endereco"),
             inverseJoinColumns =@JoinColumn(name = "id_pessoa"))
+    @JsonIgnore
     private Pessoa pessoa;
 
     public String getCep() {

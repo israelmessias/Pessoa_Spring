@@ -133,11 +133,4 @@ public class EnderecoServiceTest {
         Assertions.assertThat(result.isPresent()).isFalse();
     }
 
-    private Endereco enderecoPersistido(){
-        Endereco endereco = criarEndereco();
-
-        repository.save(endereco);
-
-        return endereco;
-    }
 }
