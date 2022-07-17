@@ -59,6 +59,7 @@ public class PessoaServiceImpl implements PessoaService {
             repository.delete(pessoa);
         } catch (Exception e) {
             //TODO: handle exception
+            throw new PessoaError("Não foi possivel achar a pessoa, motivo: "+e.getMessage());
         }
     }
 
@@ -122,7 +123,7 @@ public class PessoaServiceImpl implements PessoaService {
         try{
           return   repository.findEnderecos(id);
         }catch (NullPointerException e){
-            throw new EnderecoErro("Não foi possivel achar Endereço para essa pessoa, motivo: " + e.getMessage());
+            throw new EnderecoErro("Não foi possivel achar Pessoa para essa pessoa, motivo: " + e.getMessage());
         }
     }
 }

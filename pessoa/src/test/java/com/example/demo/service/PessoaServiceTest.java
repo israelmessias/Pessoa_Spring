@@ -134,6 +134,26 @@ public class PessoaServiceTest {
         Assertions.assertThat(result.isPresent()).isFalse();
     }
 
+    @Test
+    public void listarEndereco()
+    {
+        Integer id = 1;
+        Pessoa pessoa = criarPessoa();
+        pessoa.setId(id);
+
+        List<Pessoa> lista = Arrays.asList(pessoa);
+        Mockito.when(repository.findAll(Mockito.any(Example.class)) ).thenReturn(lista);
+
+        //execução
+        List<Pessoa> result = service.buscarPessoa(pessoa);
+
+        Assertions.assertThat(result)
+                .isNotEmpty()
+                .hasSize(1)
+                .contains(pessoa);
+
+    }
+
     private static Pessoa criarPessoa() {
         PessoaDTO dto = new PessoaDTO();
         dto.setNome("Tatiane");
@@ -147,24 +167,5 @@ public class PessoaServiceTest {
         Set<Endereco> enderecos = Set.of(criarEndereco());
         pessoa.setEnderecos(enderecos);
         return pessoa;
-    }
-
-    @Test
-    public void filtrarEndereco()
-    {
-        Pessoa pessoa = criarPessoa();
-        pessoa.setId(1);
-
-        List<Pessoa> lista = Arrays.asList(pessoa);
-        Mockito.when(repository.findAll(Mockito.any(Example.class)) ).thenReturn(lista);
-
-        //execução
-        List<Pessoa> result = service.buscarPessoa(pessoa);
-
-        Assertions.assertThat(result)
-                .isNotEmpty()
-                .hasSize(1)
-                .contains(pessoa);
-
     }
 }
